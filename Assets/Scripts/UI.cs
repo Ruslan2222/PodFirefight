@@ -72,6 +72,8 @@ public class UI : MonoBehaviour
     {
         Time.timeScale = 0f;
         _finishMenu.SetActive(true);
+        _gameMenu.SetActive(false);
+        _joystickPanel.SetActive(false);
         int summaryKill;
         summaryKill = blueKilled + redKilled;
         _summaryKillText.text = ($"You Kill:  {summaryKill} enemy");
