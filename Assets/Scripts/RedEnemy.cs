@@ -44,7 +44,7 @@ public class RedEnemy : MonoBehaviour
 
     private void Update()
     {
-        if (_player.gameObject.activeInHierarchy)
+        if (_player.gameObject.activeSelf)
         {
             _playerTransform = _player.gameObject.transform.position;
         }

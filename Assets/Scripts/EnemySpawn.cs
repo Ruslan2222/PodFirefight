@@ -56,8 +56,7 @@ public class EnemySpawn : MonoBehaviour
 
     private void SpawnEnemy(GameObject enemyPrefab)
     {
-        Vector3 spawnPosition = spawnPoint.position + new Vector3(Random.insideUnitCircle.x * 8, 0);
-        //spawnPosition.x = Mathf.Max(spawnPosition.x, spawnPoint.position.x);
+        Vector3 spawnPosition = spawnPoint.position + new Vector3(Random.insideUnitCircle.x * 6, 0);
 
         GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 

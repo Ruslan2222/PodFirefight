@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     private int _maxHealth = 100;
     private int _currentHealth;
 
+    public int currentHealth => _currentHealth;
+
     [Header("Ultra")]
     [SerializeField] private UltraBar _ultraBar;
     private int _currentUltra;
@@ -89,7 +91,6 @@ public class Player : MonoBehaviour
 
     private void Shoot()
     {
-        Debug.Log("shoot");
         Instantiate(_bullet, _bulletSpawn.position, Quaternion.Euler(0, transform.eulerAngles.y, 0));
     }
 

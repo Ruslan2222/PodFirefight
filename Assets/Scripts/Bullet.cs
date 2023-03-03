@@ -45,28 +45,38 @@ public class Bullet : MonoBehaviour
             player.TakeDamage(10);
         }
 
-        if (ricochetCount < maxRicochets && IsRicochetSurface(collision.gameObject))
+        if (ricochetCount < maxRicochets)
         {
             Vector3 newDirection = CalculateRicochetDirection(collision.contacts[0].point, _rigidbody.velocity, collision.contacts[0].normal);
-            _rigidbody.velocity = newDirection.normalized * _bulletSpeed;
-            ricochetCount++;
-
-            float rand = Random.value;
-
-            if (rand <= 0.2f)
+            var ricoshet = _rigidbody.velocity = newDirection.normalized * _bulletSpeed;
+            if (collision.gameObject.tag == "RicochetSurface")
             {
-                if (rand <= 0.1f)
+                _rigidbody.velocity = ricoshet;
+                ricochetCount++;
+            }
+            else if (collision.gameObject.tag == "Enemy")
+            {
+                float rand = Random.value;
+
+                if (rand <= 0.2f || _player.currentHealth < rand * 100)
                 {
-                    _rigidbody.velocity += Random.onUnitSphere * _bulletSpeed;
+                    if (rand <= 0.1f)
+                    {
+                        _rigidbody.velocity = ricoshet;
+                    }
+                    else
+                    {
+                        GameObject nearestEnemy = FindNearestEnemy();
+                        if (nearestEnemy != null)
+                        {
+                            Vector3 enemyDirection = (nearestEnemy.transform.position - transform.position).normalized;
+                            _rigidbody.velocity = enemyDirection * _bulletSpeed;
+                        }
+                    }
                 }
                 else
                 {
-                    GameObject nearestEnemy = FindNearestEnemy();
-                    if (nearestEnemy != null)
-                    {
-                        Vector3 enemyDirection = (nearestEnemy.transform.position - transform.position).normalized;
-                        _rigidbody.velocity = enemyDirection * _bulletSpeed;
-                    }
+                    Destroy(gameObject);
                 }
             }
 
@@ -77,15 +87,7 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
 
-    private bool IsRicochetSurface(GameObject obj)
-    {
-        if (obj.CompareTag("RicochetSurface") || obj.CompareTag("Enemy"))
-        {
-            return true;
-        }
-        return false;
     }
 
     private Vector3 CalculateRicochetDirection(Vector3 hitPoint, Vector3 currentDirection, Vector3 hitNormal)
